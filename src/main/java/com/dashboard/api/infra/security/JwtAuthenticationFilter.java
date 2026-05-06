@@ -11,7 +11,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.dashboard.api.infra.multitenancy.ServerContext;
 import com.dashboard.api.infra.multitenancy.UserContext;
 import com.dashboard.api.infra.security.userdetails.CustomUserDetailsService;
 
@@ -49,11 +48,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
 			if (jwtService.isTokenValid(jwt, userDetails.getUsername())) {
-				
-				if (jwtService.extractServerId(jwt) != null) {
-					UUID serverId = jwtService.extractServerId(jwt);
-					ServerContext.setServerId(serverId);
-				}
 
 				UUID userId = jwtService.extractUserId(jwt);
 				UserContext.setUserId(userId);
@@ -68,7 +62,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		try {
 			filterChain.doFilter(request, response);
 		} finally {
-			ServerContext.clear();
 			UserContext.clear();
 		}
 	}

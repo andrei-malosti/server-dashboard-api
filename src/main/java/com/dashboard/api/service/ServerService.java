@@ -1,0 +1,72 @@
+package com.dashboard.api.service;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import org.springframework.data.domain.Slice;
+import org.springframework.stereotype.Service;
+
+import com.dashboard.api.dto.ServerRequestDTO;
+import com.dashboard.api.dto.ServerResponseDTO;
+import com.dashboard.api.entity.Role;
+import com.dashboard.api.entity.Server;
+import com.dashboard.api.entity.Status;
+import com.dashboard.api.entity.User;
+import com.dashboard.api.exception.BusinessException;
+import com.dashboard.api.exception.ResourceNotFoundException;
+import com.dashboard.api.repository.ServerRepository;
+import com.dashboard.api.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class ServerService {
+
+	private final ServerRepository serverRepository;
+	private final UserRepository userRepository;
+	
+	@Transactional
+	public ServerResponseDTO create(ServerRequestDTO serverRequest, UUID userId) {
+		if(serverRepository.existsByPortAndUserId(serverRequest.getPort(), userId))
+			throw new BusinessException("Server with that port already exists");
+		
+		var serverOwner = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+		
+		if(serverOwner.getRole().equals(Role.MODERATOR))
+			throw new BusinessException("Only the admin can create new servers");
+		
+		var server = buildServer(serverRequest, serverOwner);
+		serverOwner.getServers().add(server);
+		return ServerResponseDTO.from(serverRepository.save(server));
+	}
+	
+	public Slice<ServerResponseDTO> findServerBySearchTerm(String searchTerm, UUID userId){
+		return serverRepository.findAllBySearchTerm(searchTerm, userId)
+				.map(ServerResponseDTO::from);
+	}
+	
+	public ServerResponseDTO findByIdAndUserId(UUID serverId, UUID userId) {
+		return ServerResponseDTO.from(serverRepository.findByIdAndUserId(serverId, userId)
+				.orElseThrow(() -> new ResourceNotFoundException("Server not found")));
+	}
+	
+	/*
+	 * toDo: do toggle to change server status to offline and online
+	 */
+	
+	private Server buildServer(ServerRequestDTO serverRequest, User serverOwner) {
+		return Server.builder()
+				.name(serverRequest.getName())
+				.ip(serverRequest.getIp())
+				.port(serverRequest.getPort())
+				.gameName(serverRequest.getGameName())
+				.users(new HashSet<>(Set.of(serverOwner)))
+				.status(Status.OFFLINE)
+				.build();
+	}
+	
+}

@@ -20,10 +20,6 @@ public class CustomUserDetails implements UserDetails{
 	
 	private final User user;
 	
-	public UUID getServerId() {
-		return user.getServer() != null ? user.getServer().getId() : null;
-	}
-	
 	public UUID getUserId() {
 		return user.getId();
 	}
