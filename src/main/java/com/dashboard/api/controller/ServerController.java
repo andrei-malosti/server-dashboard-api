@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dashboard.api.dto.PlayerRequestDTO;
 import com.dashboard.api.dto.ServerRequestDTO;
 import com.dashboard.api.infra.multitenancy.UserContext;
 import com.dashboard.api.service.ServerService;
@@ -36,6 +37,11 @@ public class ServerController {
 		return ResponseEntity.ok(serverService.findServerBySearchTerm(searchTerm, UserContext.getUserId()));
 	}
 	
+	@GetMapping("/searchAll")
+	public ResponseEntity<?> findAllServers(@RequestParam(defaultValue = "", required = false) String searchTerm){
+		return ResponseEntity.ok(serverService.findServerBySearchTerm(searchTerm));
+	}
+	
 	@GetMapping("/{serverId}")
 	public ResponseEntity<?> findByServerId(@PathVariable UUID serverId){
 		return ResponseEntity.ok(serverService.findByIdAndUserId(serverId, UserContext.getUserId()));
@@ -43,6 +49,20 @@ public class ServerController {
 	
 	/*
 	 * toDo: do toggle to change server status to offline and online
+	 */
+	
+	@PostMapping("/{serverId}/toggle")
+	public ResponseEntity<?> toggle(@PathVariable UUID serverId){
+		return ResponseEntity.ok(serverService.toggle(serverId, UserContext.getUserId()));
+	}
+	
+	@PostMapping("/{serverId}/whitelist/apply")
+	public ResponseEntity<?> applyToWhitelist(@RequestBody @Valid PlayerRequestDTO playerRequest, @PathVariable UUID serverId){
+		return ResponseEntity.status(HttpStatus.CREATED).body(serverService.playerInvite(playerRequest, serverId));
+	}
+	
+	/*
+	 * ToDo: do the acceptInvite method so the moderators and admins can accept a player invite
 	 */
 	
 }
