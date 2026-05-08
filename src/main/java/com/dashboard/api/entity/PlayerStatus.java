@@ -1,5 +1,5 @@
 package com.dashboard.api.entity;
 
 public enum PlayerStatus {
-	PENDING, APPROVED, BANNED
+	PENDING, APPROVED, DENIED, BANNED
 }

@@ -52,6 +52,13 @@ public class Server {
 	@Builder.Default
 	private Set<User> users = new HashSet<>();
 	
+	@ManyToMany
+	@JoinTable(name = "server_player",
+	joinColumns = @JoinColumn(name = "server_id"),
+	inverseJoinColumns = @JoinColumn(name = "player_id"))
+	@Builder.Default
+	private Set<Player> players = new HashSet<>();
+	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Status status;

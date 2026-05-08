@@ -1,6 +1,8 @@
 package com.dashboard.api.entity;
 
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -10,8 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,8 +41,8 @@ public class Player {
 	@Enumerated(EnumType.STRING)
 	private PlayerStatus playerStatus;
 	
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Server server;
+	@ManyToMany(mappedBy = "players")
+	@Builder.Default
+	private Set<Server> servers = new HashSet<>();
 	
 }

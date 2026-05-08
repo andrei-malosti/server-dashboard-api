@@ -27,6 +27,17 @@ public class PlayerResponseDTO {
 	private String serverName;
 	
 	
+	public static PlayerResponseDTO from(Player player, String serverName) {
+		return PlayerResponseDTO.builder()
+				.id(player.getId())
+				.steamId(player.getSteamId())
+				.nickname(player.getNickname())
+				.timePlayed(player.getTimePlayed())
+				.status(player.getPlayerStatus())
+				.serverName(serverName)
+				.build();
+	}
+	
 	public static PlayerResponseDTO from(Player player) {
 		return PlayerResponseDTO.builder()
 				.id(player.getId())
@@ -34,7 +45,6 @@ public class PlayerResponseDTO {
 				.nickname(player.getNickname())
 				.timePlayed(player.getTimePlayed())
 				.status(player.getPlayerStatus())
-				.serverName(player.getServer().getName())
 				.build();
 	}
 }
