@@ -40,7 +40,7 @@ public class AuthService {
 	
 	public RegisterResponseDTO register(RegisterRequestDTO registerRequest) {
 		if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-			throw new BusinessException("Conta já existente");
+			throw new BusinessException("Email already in use");
 		}
 		User newUser = User.builder()
 		.email(registerRequest.getEmail())

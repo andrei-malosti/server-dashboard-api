@@ -2,7 +2,6 @@ package com.dashboard.api.dto;
 
 import java.util.UUID;
 
-import com.dashboard.api.entity.Role;
 import com.dashboard.api.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -16,29 +15,25 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResponseDTO {
+public class ModeratorResponseDTO {
 
-	private UUID id;
 	private String email;
 	private String name;
+	private UUID serverId;
 	private String serverName;
-	private Role role;
 	
-	public static RegisterResponseDTO from(User user) {
-		return RegisterResponseDTO.builder()
-				.id(user.getId())
+	public static ModeratorResponseDTO from(User user) {
+		return ModeratorResponseDTO.builder()
 				.email(user.getEmail())
 				.name(user.getName())
-				.role(user.getRole())
 				.build();
 	}
 	
-	public static RegisterResponseDTO from(User user, String serverName) {
-		return RegisterResponseDTO.builder()
-				.id(user.getId())
+	public static ModeratorResponseDTO from(User user, UUID serverId, String serverName) {
+		return ModeratorResponseDTO.builder()
 				.email(user.getEmail())
 				.name(user.getName())
-				.role(user.getRole())
+				.serverId(serverId)
 				.serverName(serverName)
 				.build();
 	}
