@@ -26,6 +26,9 @@ public class ServerMod {
 	private UUID id;
 	
 	@Column(nullable = false)
+	private String activationId;
+	
+	@Column(nullable = false)
 	private String modName;
 	
 	@Column(nullable = false)
