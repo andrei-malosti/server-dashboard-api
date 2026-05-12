@@ -19,7 +19,7 @@ public class ModResponseDTO {
 	
 	private UUID id;
 	private String modName;
-	private String activationId;
+	private String modStringId;
 	private Boolean isActive;
 	private String serverName;
 	private UUID serverId;
@@ -27,7 +27,7 @@ public class ModResponseDTO {
 	public static ModResponseDTO from(ServerMod mod) {
 		return ModResponseDTO.builder()
 				.id(mod.getId())
-				.activationId(mod.getActivationId())
+				.modStringId(mod.getModStringId())
 				.modName(mod.getModName())
 				.isActive(mod.getIsActive())
 				.serverName(mod.getServer().getName())

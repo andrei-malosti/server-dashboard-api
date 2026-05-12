@@ -29,4 +29,7 @@ public interface ServerRepository extends JpaRepository<Server, UUID> {
 
 	@Query("SELECT COUNT(s) > 0 FROM Server s JOIN s.users u WHERE s.port = :port AND u.id = :userId")
 	public boolean existsByPortAndUserId(@Param("port") String port, @Param("userId") UUID userId);
+	
+	@Query("SELECT COUNT(s) > 0 FROM Server s JOIN s.users u WHERE s.id = :serverId AND u.id = :userId")
+	public boolean existsByIdAndUserId(@Param("serverId") UUID serverId, @Param("userId") UUID userId);
 }

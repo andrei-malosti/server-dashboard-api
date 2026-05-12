@@ -2,9 +2,11 @@ package com.dashboard.api.controller;
 
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,8 +33,23 @@ public class ModController {
 	}
 	
 	@GetMapping("/{serverId}/mods")
-	public ResponseEntity<?> findServerMods(@PathVariable UUID serverId){
-		return ResponseEntity.ok(modService.findServerMods(serverId, UserContext.getUserId()));
+	public ResponseEntity<?> findServerMods(@PathVariable UUID serverId, Pageable pageable){
+		return ResponseEntity.ok(modService.findServerMods(serverId, UserContext.getUserId(), pageable));
+	}
+	
+	@GetMapping("/{serverId}/mods/inactive")
+	public ResponseEntity<?> findServerInactiveMods(@PathVariable UUID serverId, Pageable pageable){
+		return ResponseEntity.ok(modService.findServerInactiveMods(serverId, UserContext.getUserId(), pageable));
+	}
+	
+	@PatchMapping("/{serverId}/mods/{modStringId}/activate")
+	public ResponseEntity<?> activate(@PathVariable UUID serverId, @PathVariable String modStringId){
+		return ResponseEntity.status(HttpStatus.CREATED).body(modService.activate(serverId, UserContext.getUserId(), modStringId));
+	}
+	
+	@PatchMapping("/{serverId}/mods/{modStringId}/deactivate")
+	public ResponseEntity<?> deactivate(@PathVariable UUID serverId, @PathVariable String modStringId){
+		return ResponseEntity.status(HttpStatus.CREATED).body(modService.deactivate(serverId, UserContext.getUserId(), modStringId));
 	}
 	
 }

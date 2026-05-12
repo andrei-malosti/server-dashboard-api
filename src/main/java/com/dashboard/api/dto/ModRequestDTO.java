@@ -15,6 +15,6 @@ public class ModRequestDTO {
 	@NotBlank(message = "mod name is required")
 	private String modName;
 	
-	@NotBlank(message = "mod activation id is required")
-	private String activationId;
+	@NotBlank(message = "mod string id is required")
+	private String modStringId;
 }
