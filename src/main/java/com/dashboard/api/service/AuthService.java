@@ -39,7 +39,7 @@ public class AuthService {
 	}
 	
 	public RegisterResponseDTO register(RegisterRequestDTO registerRequest) {
-		if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+		if(userRepository.existsByEmail(registerRequest.getEmail())) {
 			throw new BusinessException("Email already in use");
 		}
 		User newUser = User.builder()

@@ -29,7 +29,7 @@ public class ModService {
 		var server = serverRepository.findByIdAndUserId(serverId, userId)
 				.orElseThrow(() -> new ResourceNotFoundException("Server not found"));
 		
-		if(modRepository.existsInServer(serverId, modRegister.getModStringId()))
+		if(modRepository.existsByServerIdAndModStringId(serverId, modRegister.getModStringId()))
 			throw new BusinessException("Mod's already in server modlist");
 		
 		var mod = buildMod(modRegister);
@@ -58,8 +58,11 @@ public class ModService {
 		if(!serverRepository.existsByIdAndUserId(serverId, userId))
 			throw new ResourceNotFoundException("Server not found");
 		
-		var mod = modRepository.findModByModStringId(serverId, modStringId, false)
+		var mod = modRepository.findModByModStringId(serverId, modStringId)
 				.orElseThrow(() -> new ResourceNotFoundException("Mod not found in this server"));
+		
+		if(mod.getIsActive())
+			throw new BusinessException(String.format("Mod with id %s is already active", mod.getModStringId()));
 		
 		mod.setIsActive(true);
 		return ModResponseDTO.from(mod);
@@ -70,8 +73,11 @@ public class ModService {
 		if(!serverRepository.existsByIdAndUserId(serverId, userId))
 			throw new ResourceNotFoundException("Server not found");
 		
-		var mod = modRepository.findModByModStringId(serverId, modStringId, true)
+		var mod = modRepository.findModByModStringId(serverId, modStringId)
 				.orElseThrow(() -> new ResourceNotFoundException("Mod not found in this server"));
+		
+		if(!mod.getIsActive())
+			throw new BusinessException("Mod with id %s is already inactive");
 		
 		mod.setIsActive(false);
 		return ModResponseDTO.from(mod);

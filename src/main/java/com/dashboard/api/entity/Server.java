@@ -11,8 +11,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,17 +43,11 @@ public class Server {
 	@Column(nullable = false)
 	private String gameName;
 	
-	@ManyToMany
-	@JoinTable(name = "server_user",
-	joinColumns = @JoinColumn(name = "server_id"),
-	inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@ManyToMany(mappedBy = "servers")
 	@Builder.Default
 	private Set<User> users = new HashSet<>();
 	
-	@ManyToMany
-	@JoinTable(name = "server_player",
-	joinColumns = @JoinColumn(name = "server_id"),
-	inverseJoinColumns = @JoinColumn(name = "player_id"))
+	@ManyToMany(mappedBy = "servers")
 	@Builder.Default
 	private Set<Player> players = new HashSet<>();
 	

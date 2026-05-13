@@ -38,9 +38,10 @@ public class ServerService {
 		if (serverOwner.getRole() == Role.MODERATOR)
 			throw new BusinessException("Only the admin can create new servers");
 
-		var server = buildServer(serverRequest, serverOwner);
+		var server = serverRepository.save(buildServer(serverRequest, serverOwner));
 		serverOwner.getServers().add(server);
-		return ServerResponseDTO.from(serverRepository.save(server));
+				
+		return ServerResponseDTO.from(server);
 	}
 
 	public Slice<ServerResponseDTO> findServerBySearchTerm(String searchTerm, UUID userId) {

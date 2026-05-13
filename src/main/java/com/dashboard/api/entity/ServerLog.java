@@ -28,6 +28,9 @@ public class ServerLog {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 	
+	@Column(nullable = false)
+	private String description;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Action action;

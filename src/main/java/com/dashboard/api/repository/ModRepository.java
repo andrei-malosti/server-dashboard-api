@@ -16,13 +16,16 @@ import com.dashboard.api.entity.ServerMod;
 public interface ModRepository extends JpaRepository<ServerMod, UUID>{
 
 	@Query("SELECT COUNT(m) > 0 FROM ServerMod m WHERE m.server.id = :serverId AND m.modStringId = :modStringId")
-	public boolean existsInServer(@Param("serverId") UUID serverId, @Param("modStringId") String modStringId);
+	public boolean existsByServerIdAndModStringId(@Param("serverId") UUID serverId, @Param("modStringId") String modStringId);
 	
 	@Query("SELECT m FROM ServerMod m WHERE m.server.id = :serverId AND (:isActive IS NULL OR m.isActive = :isActive)")
 	public Slice<ServerMod> findServerMods(@Param("serverId") UUID serverId, @Param("isActive") Boolean isActive, Pageable pageable);
 	
 	@Query("SELECT m FROM ServerMod m WHERE m.server.id = :serverId AND m.modStringId = :modStringId AND m.isActive = :isActive")
 	public Optional<ServerMod> findModByModStringId(@Param("serverId") UUID serverId, @Param("modStringId") String modStringId, @Param("isActive") Boolean isActive);
+	
+	@Query("SELECT m FROM ServerMod m WHERE m.server.id = :serverId AND m.modStringId = :modStringId")
+	public Optional<ServerMod> findModByModStringId(@Param("serverId") UUID serverId, @Param("modStringId") String modStringId);
 	
 	
 }

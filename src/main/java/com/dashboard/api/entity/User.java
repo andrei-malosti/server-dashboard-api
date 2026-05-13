@@ -1,5 +1,6 @@
 package com.dashboard.api.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -10,6 +11,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -45,7 +48,11 @@ public class User {
 	@Column(nullable = false)
 	private Role role;
 	
-	@ManyToMany(mappedBy = "users")
-	private Set<Server> servers;
+	@ManyToMany
+	@JoinTable(name = "server_user",
+	joinColumns = @JoinColumn(name = "user_id"),
+	inverseJoinColumns = @JoinColumn(name = "server_id"))
+	@Builder.Default
+	private Set<Server> servers = new HashSet<>();
 	
 }

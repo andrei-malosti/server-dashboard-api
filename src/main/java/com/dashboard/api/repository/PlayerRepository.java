@@ -17,7 +17,10 @@ import com.dashboard.api.entity.PlayerStatus;
 public interface PlayerRepository extends JpaRepository<Player, UUID>{
 
 	@Query("SELECT p FROM Player p JOIN p.servers s WHERE s.id = :serverId AND p.steamId = :steamId")
-	public Optional<Player> findByIdAndServerId(@Param("steamId") Long steamId, @Param("serverId") UUID serverId);
+	public Optional<Player> findBySteamIdAndServerId(@Param("steamId") Long steamId, @Param("serverId") UUID serverId);
+	
+	@Query("SELECT COUNT(p) > 0 FROM Player p JOIN p.servers s WHERE s.id = :serverId AND p.steamId = :steamId")
+	public Boolean existsBySteamIdAndServerId(@Param("steamId") Long steamId, @Param("serverId") UUID serverId);
 	
 	@Query("SELECT p FROM Player p JOIN p.servers s JOIN s.users u WHERE s.id = :serverId AND u.id = :userId AND p.playerStatus = :status")
 	public Slice<Player> findServerPlayers(@Param("serverId") UUID serverId, @Param("userId") UUID userId, @Param("status") PlayerStatus status, Pageable pageable);

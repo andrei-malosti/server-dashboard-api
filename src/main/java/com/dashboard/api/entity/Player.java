@@ -12,6 +12,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,7 +43,10 @@ public class Player {
 	@Enumerated(EnumType.STRING)
 	private PlayerStatus playerStatus;
 	
-	@ManyToMany(mappedBy = "players")
+	@ManyToMany
+	@JoinTable(name = "server_player",
+	joinColumns = @JoinColumn(name = "player_id"),
+	inverseJoinColumns = @JoinColumn(name = "server_id"))
 	@Builder.Default
 	private Set<Server> servers = new HashSet<>();
 	
