@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.dashboard.api.dto.ModRequestDTO;
 import com.dashboard.api.dto.ModResponseDTO;
-import com.dashboard.api.entity.ServerMod;
+import com.dashboard.api.entity.Mod;
 import com.dashboard.api.exception.BusinessException;
 import com.dashboard.api.exception.ResourceNotFoundException;
 import com.dashboard.api.repository.ModRepository;
@@ -83,8 +83,8 @@ public class ModService {
 		return ModResponseDTO.from(mod);
 	}
 	
-	public ServerMod buildMod(ModRequestDTO modRegister) {
-		return ServerMod.builder()
+	public Mod buildMod(ModRequestDTO modRegister) {
+		return Mod.builder()
 		.modStringId(modRegister.getModStringId())
 		.modName(modRegister.getModName())
 		.isActive(true)

@@ -2,7 +2,7 @@ package com.dashboard.api.dto;
 
 import java.util.UUID;
 
-import com.dashboard.api.entity.ServerMod;
+import com.dashboard.api.entity.Mod;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class ModResponseDTO {
 	private String serverName;
 	private UUID serverId;
 	
-	public static ModResponseDTO from(ServerMod mod) {
+	public static ModResponseDTO from(Mod mod) {
 		return ModResponseDTO.builder()
 				.id(mod.getId())
 				.modStringId(mod.getModStringId())

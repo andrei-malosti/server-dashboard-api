@@ -4,14 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,7 +39,7 @@ public class Server {
 	@ManyToMany(mappedBy = "servers")
 	@Builder.Default
 	private Set<User> users = new HashSet<>();
-	
+
 	@ManyToMany(mappedBy = "servers")
 	@Builder.Default
 	private Set<Player> players = new HashSet<>();

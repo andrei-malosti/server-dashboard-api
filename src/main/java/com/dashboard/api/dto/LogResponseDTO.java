@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import com.dashboard.api.entity.Action;
-import com.dashboard.api.entity.ServerLog;
+import com.dashboard.api.entity.Log;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +26,7 @@ public class LogResponseDTO {
 	private String serverName;
 	private UUID serverId;
 	
-public static LogResponseDTO from(ServerLog log) {
+public static LogResponseDTO from(Log log) {
 		
 		return LogResponseDTO.builder()
 				.id(log.getId())

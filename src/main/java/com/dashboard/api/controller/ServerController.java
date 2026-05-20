@@ -2,6 +2,7 @@ package com.dashboard.api.controller;
 
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +34,15 @@ public class ServerController {
 	}
 	
 	@GetMapping("/me")
-	public ResponseEntity<?> findAllUserServer(@RequestParam(defaultValue = "", required = false) String searchTerm){
-		return ResponseEntity.ok(serverService.findServerBySearchTerm(searchTerm, UserContext.getUserId()));
+	public ResponseEntity<?> findAllUserServer(@RequestParam(defaultValue = "", required = false) String searchTerm,
+											   Pageable pageable){
+		return ResponseEntity.ok(serverService.findUserServerBySearchTerm(searchTerm, UserContext.getUserId(), pageable));
 	}
 	
 	@GetMapping
-	public ResponseEntity<?> findAllServers(@RequestParam(defaultValue = "", required = false) String searchTerm){
-		return ResponseEntity.ok(serverService.findServerBySearchTerm(searchTerm));
+	public ResponseEntity<?> findAllServers(@RequestParam(defaultValue = "", required = false) String searchTerm,
+											Pageable pageable){
+		return ResponseEntity.ok(serverService.findServerBySearchTerm(searchTerm, pageable));
 	}
 	
 	@GetMapping("/{serverId}")

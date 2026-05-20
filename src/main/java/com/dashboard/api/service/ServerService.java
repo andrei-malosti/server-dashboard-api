@@ -3,6 +3,7 @@ package com.dashboard.api.service;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +30,12 @@ public class ServerService {
 
 	@Transactional
 	public ServerResponseDTO create(ServerRequestDTO serverRequest, UUID userId) {
-		if (serverRepository.existsByPortAndUserId(serverRequest.getPort(), userId))
-			throw new BusinessException("Server with that port already exists");
 
 		var serverOwner = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+		if (serverRepository.existsByPortAndUserId(serverRequest.getPort(), userId))
+			throw new BusinessException("Server with that port already exists");
 
 		if (serverOwner.getRole() == Role.MODERATOR)
 			throw new BusinessException("Only the admin can create new servers");
@@ -44,12 +46,12 @@ public class ServerService {
 		return ServerResponseDTO.from(server);
 	}
 
-	public Slice<ServerResponseDTO> findServerBySearchTerm(String searchTerm, UUID userId) {
-		return serverRepository.findAllBySearchTerm(searchTerm, userId).map(ServerResponseDTO::from);
+	public Slice<ServerResponseDTO> findUserServerBySearchTerm(String searchTerm, UUID userId, Pageable pageable) {
+		return serverRepository.findAllBySearchTerm(searchTerm, userId, pageable).map(ServerResponseDTO::from);
 	}
 
-	public Slice<ServerResponseDTO> findServerBySearchTerm(String searchTerm) {
-		return serverRepository.findAllBySearchTerm(searchTerm).map(ServerResponseDTO::fromWithoutIpPort);
+	public Slice<ServerResponseDTO> findServerBySearchTerm(String searchTerm, Pageable pageable) {
+		return serverRepository.findAllBySearchTerm(searchTerm, pageable).map(ServerResponseDTO::fromWithoutIpPort);
 	}
 
 	public ServerResponseDTO findByIdAndUserId(UUID serverId, UUID userId) {

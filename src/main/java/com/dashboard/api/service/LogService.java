@@ -3,15 +3,12 @@ package com.dashboard.api.service;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import com.dashboard.api.entity.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import com.dashboard.api.dto.LogResponseDTO;
-import com.dashboard.api.entity.Action;
-import com.dashboard.api.entity.Server;
-import com.dashboard.api.entity.ServerLog;
-import com.dashboard.api.entity.User;
 import com.dashboard.api.exception.ResourceNotFoundException;
 import com.dashboard.api.repository.LogRepository;
 import com.dashboard.api.repository.ServerRepository;
@@ -34,7 +31,7 @@ public class LogService {
 			OffsetDateTime dateTime
 			) {
 		
-		var log = ServerLog.builder()
+		var log = Log.builder()
 		.description(description)
 		.action(action)
 		.dateTime(dateTime)
